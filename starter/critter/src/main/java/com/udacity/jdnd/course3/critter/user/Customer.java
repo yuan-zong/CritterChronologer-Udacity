@@ -14,7 +14,7 @@ public class Customer extends User {
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Pet> pets;
 
     public String getPhoneNumber() {

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/schedule")
-@Transactional
+//@Transactional
 public class ScheduleController {
 
 

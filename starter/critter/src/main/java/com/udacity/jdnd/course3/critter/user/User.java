@@ -5,6 +5,7 @@ import org.hibernate.annotations.Nationalized;
 import javax.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

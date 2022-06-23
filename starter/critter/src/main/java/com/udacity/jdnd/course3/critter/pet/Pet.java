@@ -1,11 +1,11 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.user.Customer;
 import com.udacity.jdnd.course3.critter.user.User;
 import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 public class Pet extends User {
@@ -17,7 +17,11 @@ public class Pet extends User {
     @Nationalized
     private String name;
 
-    private long ownerId;
+    @ManyToOne
+//    @JoinColumn(name="customer_id")
+    // renamed customer from owned according to
+    // https://stackoverflow.com/questions/4011472/mappedby-reference-an-unknown-target-entity-property
+    private Customer customer;
 
     private String type;
 
@@ -70,11 +74,11 @@ public class Pet extends User {
         this.notes = notes;
     }
 
-    public long getOwnerId() {
-        return ownerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setOwnerId(long ownerId) {
-        this.ownerId = ownerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 }

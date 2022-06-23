@@ -1,11 +1,11 @@
 package com.udacity.jdnd.course3.critter.pet;
 
 import com.udacity.jdnd.course3.critter.user.Customer;
-import com.udacity.jdnd.course3.critter.user.CustomerNotFoundException;
 import com.udacity.jdnd.course3.critter.user.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +14,12 @@ public class PetService {
 
     @Autowired
     private final PetRepository petRepository;
+    @Autowired
+    private final CustomerRepository customerRepository;
 
-    public PetService(PetRepository petRepository){
+    public PetService(PetRepository petRepository, CustomerRepository customerRepository) {
         this.petRepository = petRepository;
+        this.customerRepository = customerRepository;
     }
 
     public Pet findPetById(long id) {
@@ -34,7 +37,17 @@ public class PetService {
     }
 
     public Pet savePet(Pet pet){
-        return petRepository.save(pet);
+        Pet savedPet = petRepository.save(pet);
+        Customer owner = savedPet.getCustomer();
+        List<Pet> petsOwned = owner.getPets();
+        if (petsOwned == null) {
+            petsOwned = new ArrayList<>();
+        }
+        if (!petsOwned.contains(savedPet)) {
+            petsOwned.add(savedPet);
+            owner.setPets(petsOwned);
+        }
+        return savedPet;
     }
 
 }

@@ -31,9 +31,9 @@ import java.util.stream.IntStream;
  *
  * These tests should all pass once the project is complete.
  */
-//@Transactional
+@Transactional
 @SpringBootTest(classes = CritterApplication.class)
-//@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 public class CritterFunctionalTest {
 
     @Autowired

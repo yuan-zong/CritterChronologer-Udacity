@@ -1,7 +1,8 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.user.Customer;
+import com.udacity.jdnd.course3.critter.user.CustomerService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,15 +13,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/pet")
-@Transactional
+//@Transactional
 public class PetController {
 
     private final PetService petService;
+    private final CustomerService customerService;
 
-    public PetController(PetService petService) {
+
+    public PetController(PetService petService, CustomerService customerService) {
         this.petService = petService;
+        this.customerService = customerService;
     }
-
 
     @GetMapping
     public List<PetDTO> getAllPets() {
@@ -30,12 +33,14 @@ public class PetController {
     public Pet convertPetDTOToPet(PetDTO petDTO) {
         Pet pet  = new Pet();
         BeanUtils.copyProperties(petDTO, pet);
+        pet.setCustomer(customerService.findCustomerById(petDTO.getOwnerId()));
         return pet;
     }
 
     public PetDTO convertPetToPetDTO(Pet pet) {
         PetDTO petDTO = new PetDTO();
         BeanUtils.copyProperties(pet, petDTO);
+        petDTO.setOwnerId(pet.getCustomer().getId());
         return petDTO;
     }
 
@@ -58,6 +63,7 @@ public class PetController {
 
     @GetMapping("/owner/{ownerId}")
     public List<PetDTO> getPetsByOwner(@PathVariable long ownerId) {
-        throw new UnsupportedOperationException();
+        Customer owner = customerService.findCustomerById(ownerId);
+        return convertListPetToListPetDTO(owner.getPets());
     }
 }
