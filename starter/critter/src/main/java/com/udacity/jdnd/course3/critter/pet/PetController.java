@@ -1,6 +1,7 @@
 package com.udacity.jdnd.course3.critter.pet;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/pet")
+@Transactional
 public class PetController {
 
     private final PetService petService;
