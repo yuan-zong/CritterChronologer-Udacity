@@ -1,11 +1,10 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
+import com.udacity.jdnd.course3.critter.user.Employee;
 import com.udacity.jdnd.course3.critter.user.EmployeeSkill;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +16,13 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private List<Long> employeeIds;
-    private List<Long> petIds;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Employee> employees;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Pet> pets;
     private LocalDate date;
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> activities;
 
     public Long getId() {
@@ -30,20 +33,20 @@ public class Schedule {
         this.id = id;
     }
 
-    public List<Long> getEmployeeIds() {
-        return employeeIds;
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setEmployeeIds(List<Long> employeeIds) {
-        this.employeeIds = employeeIds;
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
-    public List<Long> getPetIds() {
-        return petIds;
+    public List<Pet> getPets() {
+        return pets;
     }
 
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 
     public LocalDate getDate() {
