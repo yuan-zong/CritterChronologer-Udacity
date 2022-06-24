@@ -4,7 +4,10 @@ import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
-@Entity
+// As suggested by mentor, use @MappedSuperclass instead of @Entity to be able to use H2 database for testing
+// https://knowledge.udacity.com/questions/865081
+@MappedSuperclass
+//@Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
