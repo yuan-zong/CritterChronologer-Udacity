@@ -43,4 +43,8 @@ public class EmployeeService {
     public Employee saveEmployee(Employee employee){
         return employeeRepository.save(employee);
     }
+
+    List<Employee> findByDaysAvailableContainsAndSkillsIn(DayOfWeek day, Set<EmployeeSkill> skills) {
+        return employeeRepository.findByDaysAvailableContainsAndSkillsIn(day, skills);
+    }
 }

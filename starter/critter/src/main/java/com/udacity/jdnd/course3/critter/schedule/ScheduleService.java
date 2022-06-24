@@ -1,10 +1,12 @@
 package com.udacity.jdnd.course3.critter.schedule;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ScheduleService {
@@ -33,5 +35,14 @@ public class ScheduleService {
     public Schedule saveSchedule(Schedule schedule){
         return scheduleRepository.save(schedule);
     }
+    List<Schedule> findAllByEmployeesId(Long employeeId) {
+        return scheduleRepository.findAllSchedulesByEmployeesId(employeeId);
+    }
+    List<Schedule> findAllSchedulesByPetsId(Long petId) {
+        return scheduleRepository.findAllSchedulesByPetsId(petId);
+    }
+//    List<Schedule> findByPetIn(Set<Pet> pets) {
+//        return scheduleRepository.findAll(pets);
+//    }
 
 }

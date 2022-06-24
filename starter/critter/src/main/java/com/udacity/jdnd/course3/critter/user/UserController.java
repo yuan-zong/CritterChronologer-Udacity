@@ -6,9 +6,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Handles web requests related to Users.
@@ -122,7 +120,41 @@ public class UserController {
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+        List<Employee> employeesAvailable = employeeService.findByDaysAvailableContainsAndSkillsIn(
+                employeeDTO.getDate().getDayOfWeek(), employeeDTO.getSkills());
+        HashSet<EmployeeSkill> skillsToCover = new HashSet<>(employeeDTO.getSkills());
+        if (skillsToCover.size() > 0) {
+            List<EmployeeDTO> employeeNeeded = new ArrayList<>();
+//            for (Employee employee: employeesAvailable) {
+//                boolean toAdd = false;
+//                for (EmployeeSkill employeeSkill: employee.getSkills()) {
+//                    if (skillsToCover.contains(employeeSkill)) {
+//                        skillsToCover.remove(employeeSkill);
+//                        toAdd = true;
+//                    }
+//                }
+//                if (toAdd) {
+//                    employeeNeeded.add(convertEmployeeToEmployeeDTO(employee));
+//                    if (skillsToCover.size() == 0) {
+//                        return employeeNeeded;
+//                    }
+//                }
+//            }
+//            return employeeNeeded;
+            HashMap<Long, Integer> counter = new HashMap<>();
+            // every (employee, skill) pair corresponds to one entry in the list employeesAvailable
+            for(Employee employee : employeesAvailable){
+                counter.merge(employee.getId(),1, Integer::sum);
+            }
+            for(Long employeeId : counter.keySet()){
+                if(counter.get(employeeId) >= skillsToCover.size()){
+                    employeeNeeded.add(convertEmployeeToEmployeeDTO(employeeService.findEmployeeById(employeeId)));
+                }
+            }
+            return employeeNeeded;
+        } else {
+            return convertListEmployeeToListEmployeeDTO(employeesAvailable);
+        }
     }
 
 }
