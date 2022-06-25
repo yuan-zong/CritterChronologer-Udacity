@@ -2,11 +2,13 @@ package com.udacity.jdnd.course3.critter.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class CustomerService {
 
     @Autowired
@@ -20,9 +22,6 @@ public class CustomerService {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
             Customer customer = optionalCustomer.get();
-//            customer.setPrice(priceClient.getPrice(id));
-//            customer.setLocation(mapsClient.getAddress(customer.getLocation()));
-
             return customer;
         } else {
             throw new CustomerNotFoundException("Customer Not Found");
